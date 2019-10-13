@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CoreData
 
 // Request - The Networking Client
 // A minimal networking client that to get the basics done
@@ -33,16 +34,24 @@ final class Request<Result: Decodable> {
             case (.none, .some(let statusCode), _) where !(200...299).contains(statusCode):
                 onCompletion?(.failure(Response<Result>.Error.httpStatus(statusCode)))
             case (.none, _, .some(let data)):
-                do {
-                    let result = try JSONDecoder().decode(Result.self, from: data)
-                    onCompletion?(.success(result))
-                } catch {
-                    onCompletion?(.failure(error))
-                }
+                do { onCompletion?(.success(try self.decode(data: data)))
+                } catch { onCompletion?(.failure(error)) }
             default:
                 break
             }
         }.resume()
+    }
+    
+    private func decode(data: Data) throws -> Result {
+        let managedObjectContext = CoreDataStack.shared.newBackgroundContext
+            .mergePolicy(NSMergeByPropertyObjectTrumpMergePolicy)
+        let result = try JSONDecoder()
+            .userinfo(key: CodingUserInfoKey.managedObjectContext!, value: managedObjectContext)
+            .decode(Result.self, from: data)
+        if managedObjectContext.hasChanges {
+            try managedObjectContext.save()
+        }
+        return result
     }
 }
 
