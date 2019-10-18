@@ -42,10 +42,54 @@ final class CoreDataStack {
                  Check the error message to determine what the actual problem was.
                  */
                 fatalError("Unresolved error \(error), \(error.userInfo)")
+                
             }
+            container.viewContext.automaticallyMergesChangesFromParent = true
         })
         return container
     }()
+    
+    public func delete(_ objects: [NSManagedObject], from context: NSManagedObjectContext = CoreDataStack.shared.mainContext, onCompletion: ((Error?)->Void)? = nil) {
+        context.perform {
+            do {
+                if let deleted = (try context.execute(NSBatchDeleteRequest(objectIDs: objects.map { $0.objectID })
+                        .resultType(.resultTypeObjectIDs)
+                    ) as? NSBatchDeleteResult)?.result as? [NSManagedObjectID], !deleted.isEmpty {
+                    NSManagedObjectContext.mergeChanges(
+                        fromRemoteContextSave: [NSDeletedObjectsKey: deleted],
+                        into: [context]
+                    )
+                    try context.save()
+                }
+                onCompletion?(nil)
+            } catch {
+                onCompletion?(error)
+            }
+        }
+    }
+    
+    public func delete(_ entity: NSManagedObject.Type, from context: NSManagedObjectContext = CoreDataStack.shared.mainContext, onCompletion: ((Error?)->Void)? = nil) {
+        delete(entity: entity.description(), from: context, onCompletion: onCompletion)
+    }
+    
+    public func delete(entity named: String?, from context: NSManagedObjectContext = CoreDataStack.shared.mainContext, onCompletion: ((Error?)->Void)? = nil) {
+        guard let entityName = named else { return }
+        context.perform {
+            do {
+                try context.execute(NSBatchDeleteRequest(fetchRequest: NSFetchRequest<NSFetchRequestResult>(entityName: entityName)))
+                try context.save()
+                onCompletion?(nil)
+            } catch {
+                onCompletion?(error)
+            }
+        }
+    }
+    
+    public func clearAll() throws {
+        persistentContainer.managedObjectModel.entities.forEach {
+            delete(entity: $0.name)
+        }
+    }
 
     // MARK: - Core Data Saving support
     func saveContext () {

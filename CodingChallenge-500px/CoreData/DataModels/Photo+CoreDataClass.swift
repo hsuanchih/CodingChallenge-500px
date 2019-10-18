@@ -21,10 +21,14 @@ final public class Photo: NSManagedObject, Decodable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         id = try container.decode(Int64.self, forKey: .id)
         name = try container.decode(String.self, forKey: .name)
-        width = try container.decode(Int16.self, forKey: .width)
-        height = try container.decode(Int16.self, forKey: .height)
+        width = try container.decode(Int32.self, forKey: .width)
+        height = try container.decode(Int32.self, forKey: .height)
         userID = try container.decode(Int64.self, forKey: .user_id)
         imageUrls = try container.decode([Image].self, forKey: .images).map { $0.url }
         _ = try container.decode(User.self, forKey: .user)
+    }
+    override public func awakeFromInsert() {
+        super.awakeFromInsert()
+        creationDate = Date()
     }
 }

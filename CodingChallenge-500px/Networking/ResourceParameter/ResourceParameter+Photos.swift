@@ -14,13 +14,31 @@ extension ResourceParameter {
         case only(Category)
         case exclude(Category)
         case page(Int)
+        case rpp(Int)
         case tags(Bool)
     }
 }
 
 extension ResourceParameter.Photos {
-    public enum Feature : String {
-        case popular, highest_rated, upcoming, editors, fresh_today, fresh_yesterday, fresh_week
+    public enum Feature : String, CaseIterable {
+        case popular, editors, fresh_today, highest_rated, fresh_yesterday, upcoming
+        
+        public var titleString : String {
+            switch self {
+            case .popular:
+                return "Popular"
+            case .editors:
+                return "Editor's Choice"
+            case .fresh_today:
+                return "Fresh Today"
+            case .highest_rated:
+                return "Highest Rated"
+            case .fresh_yesterday:
+                return "Yesterday's Bests"
+            case .upcoming:
+                return "Upcoming"
+            }
+        }
     }
     public enum Category : Int {
         case uncategorized, celebrities, film, journalism, nude, blackAndWhite, stillLife, people, landscapes,
@@ -40,6 +58,8 @@ extension ResourceParameter.Photos : ResourceParameterDecodable {
             return ("exclude", String(category.rawValue))
         case .page(let number):
             return ("page", String(number))
+        case .rpp(let number):
+            return ("rpp", String(number))
         case .tags(let bool):
             return ("tags", String(bool ? 1:0))
         }

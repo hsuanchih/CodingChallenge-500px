@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="15400" systemVersion="18G95" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Photo" representedClassName=".Photo" syncable="YES">
-        <attribute name="height" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="creationDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="height" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="id" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="imageUrls" optional="YES" attributeType="Transformable"/>
         <attribute name="name" attributeType="String"/>
         <attribute name="userID" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="width" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="width" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
                 <constraint value="id"/>
@@ -24,7 +25,7 @@
         </uniquenessConstraints>
     </entity>
     <elements>
-        <element name="Photo" positionX="-63" positionY="-18" width="128" height="133"/>
+        <element name="Photo" positionX="-63" positionY="-18" width="128" height="148"/>
         <element name="User" positionX="-45" positionY="27" width="128" height="88"/>
     </elements>
 </model>

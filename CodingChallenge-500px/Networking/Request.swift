@@ -14,6 +14,7 @@ import CoreData
 final class Request<Result: Decodable> {
     
     private var urlRequest : URLRequest
+    private var urlComponents = URLComponents()
     
     public init(version: API.Version = .v1, endPoint: API.Endpoint, httpMethod: HTTPMethod = .get) {
         urlRequest = URLRequest(
@@ -23,35 +24,59 @@ final class Request<Result: Decodable> {
             cachePolicy: .useProtocolCachePolicy,
             timeoutInterval: 10
         )
+        urlComponents = URLComponents(string: endPoint.rawValue)!
         urlRequest.addValue(API.consumerKey, forHTTPHeaderField: "consumer_key")
     }
     
+    public var constructUrlRequest : URLRequest {
+        if let query = urlComponents.query, let urlString = urlRequest.url?.absoluteString {
+            urlRequest.url = URL(string: String(format: "%@?%@", urlString, query))
+        }
+        return urlRequest
+    }
+    
     public func fire(_ onCompletion: ((Response<Result>)->Void)?) {
-        URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
+        URLSession.shared.dataTask(with: constructUrlRequest) { (data, response, error) in
             switch (error, (response as? HTTPURLResponse)?.statusCode, data) {
             case (.some(let error), _, _):
                 onCompletion?(.failure(error))
             case (.none, .some(let statusCode), _) where !(200...299).contains(statusCode):
                 onCompletion?(.failure(Response<Result>.Error.httpStatus(statusCode)))
             case (.none, _, .some(let data)):
-                do { onCompletion?(.success(try self.decode(data: data)))
-                } catch { onCompletion?(.failure(error)) }
+                self.decode(
+                    data: data,
+                    with: CoreDataStack.shared.newBackgroundContext
+                        .mergePolicy(NSMergeByPropertyObjectTrumpMergePolicy),
+                    onCompletion: onCompletion
+                )
             default:
                 break
             }
         }.resume()
     }
     
-    private func decode(data: Data) throws -> Result {
-        let managedObjectContext = CoreDataStack.shared.newBackgroundContext
-            .mergePolicy(NSMergeByPropertyObjectTrumpMergePolicy)
-        let result = try JSONDecoder()
-            .userinfo(key: CodingUserInfoKey.managedObjectContext!, value: managedObjectContext)
-            .decode(Result.self, from: data)
-        if managedObjectContext.hasChanges {
-            try managedObjectContext.save()
+    private func decode(data: Data, with context: NSManagedObjectContext? = nil, onCompletion: ((Response<Result>)->Void)? = nil) {
+        if let context = context {
+            context.perform {
+                do {
+                    let result = try JSONDecoder()
+                        .userinfo(key: CodingUserInfoKey.managedObjectContext!, value: context)
+                        .decode(Result.self, from: data)
+                    if context.hasChanges {
+                        try context.save()
+                    }
+                    onCompletion?(Response.success(result))
+                } catch {
+                    onCompletion?(Response.failure(error))
+                }
+            }
+        } else {
+            do {
+                onCompletion?(Response.success(try JSONDecoder().decode(Result.self, from: data)))
+            } catch {
+                onCompletion?(Response.failure(error))
+            }
         }
-        return result
     }
 }
 
@@ -66,8 +91,13 @@ extension Request {
 // MARK: Request Builder
 extension Request {
     public func resourceParameter(_ param: ResourceParameterDecodable) -> Self {
-        let (key, value) = param.decode
-        return httpHeader(key: key, value: value)
+        let (key, value) = param.decode, queryItem = URLQueryItem(name: key, value: value)
+        if let _ = urlComponents.queryItems {
+            urlComponents.queryItems?.append(queryItem)
+        } else {
+            urlComponents.queryItems = [queryItem]
+        }
+        return self
     }
     public func httpHeader(key: String, value: String) -> Self {
         urlRequest.addValue(value, forHTTPHeaderField: key)

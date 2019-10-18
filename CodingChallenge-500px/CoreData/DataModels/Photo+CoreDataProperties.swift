@@ -17,10 +17,11 @@ extension Photo {
     }
     @NSManaged public var id        : Int64
     @NSManaged public var name      : String
-    @NSManaged public var width     : Int16
-    @NSManaged public var height    : Int16
+    @NSManaged public var width     : Int32
+    @NSManaged public var height    : Int32
     @NSManaged public var userID    : Int64
     @NSManaged public var imageUrls : [String]
+    @NSManaged public var creationDate : Date
 }
 
 
