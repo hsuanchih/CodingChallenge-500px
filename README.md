@@ -7,3 +7,6 @@ The objective of this coding challenge is to create a simple photo-browsing app 
 * When a user clicks on showcased photo, a full screen version of the photo should be displayed along with detailed information about the photo.
 
 The engineering team at 500px works with [IGListKit](https://github.com/Instagram/IGListKit), [RocketData](https://github.com/plivesey/RocketData) and [Alamofire](https://github.com/Alamofire/Alamofire) on a day-to-day basis to deliver performant & reliable products. My attempt at this challenge will be to recreate a simplified version of [500px](https://apps.apple.com/app/500px/id471965292) using their native counterparts - UICollectionView, CoreData, and URLSession.
+
+## The Demo
+![Demo](./Demo/500pxDemo.gif)
