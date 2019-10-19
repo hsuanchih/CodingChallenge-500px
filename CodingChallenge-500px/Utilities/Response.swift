@@ -8,9 +8,9 @@
 
 import Foundation
 
-// Network Response
-// Handles network response & failures in a single type
-enum Response<Result> {
+// Response
+// Handles response & failures in a single type
+public enum Response<Result> {
     case success(Result)
     case failure(Swift.Error)
     

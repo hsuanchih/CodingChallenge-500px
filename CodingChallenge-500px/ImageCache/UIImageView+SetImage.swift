@@ -13,8 +13,10 @@ import UIKit
 extension UIImageView {
     
     public func setImage(with urlString: String?) {
-        ImageCache.image(with: urlString) { image in
-            DispatchQueue.main.async { self.image = image }
+        ImageCache.image(with: urlString) {
+            if case let .success(image) = $0 {
+                DispatchQueue.main.async { self.image = image }
+            }
         }
     }
 }

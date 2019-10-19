@@ -28,35 +28,44 @@ struct ImageCache {
         case png
     }
     
-    public static func image(with urlString: String?, format: Format = .jpeg, _ onCompletion: ((UIImage?)->Void)? = nil) {
-        guard let urlString = urlString else {
-            onCompletion?(nil)
+    public enum `Error` : Swift.Error {
+        case urlStringInvalid
+        case localImageDataInvalid
+        case remoteImageDataInvalid
+        case filenameInvalid
+    }
+    
+    public static func image(with urlString: String?, format: Format = .png, _ onCompletion: ((Response<UIImage>)->Void)? = nil) {
+        guard let urlString = urlString, !urlString.isEmpty else {
+            onCompletion?(Response.failure(Error.urlStringInvalid))
             return
         }
-        DispatchQueue.global(qos: .userInitiated).async {
-            do {
-                if let filename = urlString.uniqueIdentifier?.appendingFormat(".%@", format.rawValue) {
-                    if let data = try PersistentStore.retrieveData(file: filename, from: .cache) {
-                        onCompletion?(UIImage(data: data))
-                        return
+        if let filename = urlString.uniqueIdentifier?.appendingFormat(".%@", format.rawValue) {
+            PersistentStore.retrieveData(file: filename, from: .cache) {
+                switch $0 {
+                case .success(let data):
+                    if let image = UIImage(data: data) {
+                        onCompletion?(Response.success(image))
+                    } else {
+                        onCompletion?(Response.failure(Error.localImageDataInvalid))
                     }
-                    if let url = URL(string: urlString), let image = UIImage(data: try Data(contentsOf: url)) {
-                        onCompletion?(image)
-                        if let imageData = format == .png ? image.pngData() : image.jpegData(compressionQuality: 1) {
-                            try PersistentStore.save(
-                                data: imageData,
-                                to: filename,
-                                in: .cache
-                            )
+                case.failure(_):
+                    do {
+                        if let url = URL(string: urlString), let image = UIImage(data: try Data(contentsOf: url)) {
+                            onCompletion?(Response.success(image))
+                            if let imageData = format == .png ? image.pngData() : image.jpegData(compressionQuality: 1) {
+                                PersistentStore.save(data: imageData, to: filename, in: .cache)
+                            }
+                        } else {
+                            onCompletion?(Response.failure(Error.remoteImageDataInvalid))
                         }
-                        return
+                    } catch {
+                        onCompletion?(Response.failure(Error.remoteImageDataInvalid))
                     }
                 }
-            } catch {
-                onCompletion?(nil)
-                return
             }
-            onCompletion?(nil)
+        } else {
+            onCompletion?(Response.failure(Error.filenameInvalid))
         }
     }
 }

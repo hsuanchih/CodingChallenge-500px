@@ -49,6 +49,8 @@
 		474A04432353CAAD00F607B0 /* ShowcaseCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 474A04372353A24A00F607B0 /* ShowcaseCollectionViewCell.xib */; };
 		474A04482354FEF300F607B0 /* ShowcaseViewController+DataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 474A04472354FEF300F607B0 /* ShowcaseViewController+DataProvider.swift */; };
 		474A044A2355094700F607B0 /* NSBatchDeleteRequest+Builder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 474A04492355094700F607B0 /* NSBatchDeleteRequest+Builder.swift */; };
+		47C83B53235A3E71006BE889 /* UITapGestureRecognizer+Builder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C83B52235A3E71006BE889 /* UITapGestureRecognizer+Builder.swift */; };
+		47C83B57235AD574006BE889 /* UINavigationController+DeviceOrientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C83B56235AD574006BE889 /* UINavigationController+DeviceOrientation.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -109,6 +111,8 @@
 		474A043A2353A57400F607B0 /* UIControl+Builder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIControl+Builder.swift"; sourceTree = "<group>"; };
 		474A04472354FEF300F607B0 /* ShowcaseViewController+DataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ShowcaseViewController+DataProvider.swift"; sourceTree = "<group>"; };
 		474A04492355094700F607B0 /* NSBatchDeleteRequest+Builder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSBatchDeleteRequest+Builder.swift"; sourceTree = "<group>"; };
+		47C83B52235A3E71006BE889 /* UITapGestureRecognizer+Builder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITapGestureRecognizer+Builder.swift"; sourceTree = "<group>"; };
+		47C83B56235AD574006BE889 /* UINavigationController+DeviceOrientation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController+DeviceOrientation.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -168,6 +172,7 @@
 		474A03B5234FC31800F607B0 /* CodingChallenge-500px */ = {
 			isa = PBXGroup;
 			children = (
+				47C83B55235AD53C006BE889 /* SupportedOrientation */,
 				474A042B2353A07300F607B0 /* ViewControllers */,
 				474A041F2352CC9400F607B0 /* ImageCache */,
 				474A041C235276A700F607B0 /* PersistentStore */,
@@ -197,10 +202,12 @@
 		474A03E5234FDC6100F607B0 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				474A03EA234FDE1000F607B0 /* Response.swift */,
 				474A03E6234FDCB600F607B0 /* ProjectResource.swift */,
 				474A043A2353A57400F607B0 /* UIControl+Builder.swift */,
 				4729666C2357D4D000D3EBF4 /* UIImage+CircularImage.swift */,
 				4729667423590F7400D3EBF4 /* UICollectionView+Reuseable.swift */,
+				47C83B52235A3E71006BE889 /* UITapGestureRecognizer+Builder.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -212,7 +219,6 @@
 				474A03F4234FDE7E00F607B0 /* ResourceParameter */,
 				474A03ED234FDE4100F607B0 /* API */,
 				474A03E9234FDE1000F607B0 /* Request.swift */,
-				474A03EA234FDE1000F607B0 /* Response.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -342,6 +348,14 @@
 			path = DataProvider;
 			sourceTree = "<group>";
 		};
+		47C83B55235AD53C006BE889 /* SupportedOrientation */ = {
+			isa = PBXGroup;
+			children = (
+				47C83B56235AD574006BE889 /* UINavigationController+DeviceOrientation.swift */,
+			);
+			path = SupportedOrientation;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -453,6 +467,7 @@
 				474A041923524A3600F607B0 /* NSManagedObjectContext+Builder.swift in Sources */,
 				474A044A2355094700F607B0 /* NSBatchDeleteRequest+Builder.swift in Sources */,
 				474A03E7234FDCB600F607B0 /* ProjectResource.swift in Sources */,
+				47C83B57235AD574006BE889 /* UINavigationController+DeviceOrientation.swift in Sources */,
 				474A042A2352F3BF00F607B0 /* UIImageView+SetImage.swift in Sources */,
 				474A03EB234FDE1000F607B0 /* Request.swift in Sources */,
 				474A03BB234FC31800F607B0 /* ViewController.swift in Sources */,
@@ -469,6 +484,7 @@
 				474A04422353CA9B00F607B0 /* ShowcaseCollectionViewCell.swift in Sources */,
 				474A03F8234FDE8C00F607B0 /* ResourceParameter.swift in Sources */,
 				474A03F3234FDE5000F607B0 /* API+Version.swift in Sources */,
+				47C83B53235A3E71006BE889 /* UITapGestureRecognizer+Builder.swift in Sources */,
 				474A043B2353A57400F607B0 /* UIControl+Builder.swift in Sources */,
 				474A03F1234FDE5000F607B0 /* API.swift in Sources */,
 				474A03F7234FDE8C00F607B0 /* ResourceParameter+Photos.swift in Sources */,
@@ -648,7 +664,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "HsuanChihChuang.CodingChallenge-500px";
+				PRODUCT_BUNDLE_IDENTIFIER = com.hsuanchihchuang.500px;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -667,7 +683,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "HsuanChihChuang.CodingChallenge-500px";
+				PRODUCT_BUNDLE_IDENTIFIER = com.hsuanchihchuang.500px;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";

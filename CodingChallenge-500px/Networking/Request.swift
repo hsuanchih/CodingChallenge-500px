@@ -16,7 +16,7 @@ final class Request<Result: Decodable> {
     private var urlRequest : URLRequest
     private var urlComponents = URLComponents()
     
-    public init(version: API.Version = .v1, endPoint: API.Endpoint, httpMethod: HTTPMethod = .get) {
+    public init(httpMethod: HTTPMethod = .get, version: API.Version = .v1, endPoint: API.Endpoint) {
         urlRequest = URLRequest(
             url: URL(string: API.baseUrl)!
                 .appendingPathComponent(version.rawValue)
@@ -24,7 +24,6 @@ final class Request<Result: Decodable> {
             cachePolicy: .useProtocolCachePolicy,
             timeoutInterval: 10
         )
-        urlComponents = URLComponents(string: endPoint.rawValue)!
         urlRequest.addValue(API.consumerKey, forHTTPHeaderField: "consumer_key")
     }
     
@@ -45,8 +44,7 @@ final class Request<Result: Decodable> {
             case (.none, _, .some(let data)):
                 self.decode(
                     data: data,
-                    with: CoreDataStack.shared.newBackgroundContext
-                        .mergePolicy(NSMergeByPropertyObjectTrumpMergePolicy),
+                    with: CoreDataStack.shared.mainBackgroundContext,
                     onCompletion: onCompletion
                 )
             default:

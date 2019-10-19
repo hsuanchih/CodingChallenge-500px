@@ -16,6 +16,7 @@ extension ResourceParameter {
         case page(Int)
         case rpp(Int)
         case tags(Bool)
+        case image_size(Int)
     }
 }
 
@@ -62,6 +63,8 @@ extension ResourceParameter.Photos : ResourceParameterDecodable {
             return ("rpp", String(number))
         case .tags(let bool):
             return ("tags", String(bool ? 1:0))
+        case .image_size(let size):
+            return ("image_size[]", String(size))
         }
     }
 }

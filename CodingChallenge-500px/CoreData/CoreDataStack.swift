@@ -15,6 +15,10 @@ final class CoreDataStack {
     public var mainContext : NSManagedObjectContext {
         return persistentContainer.viewContext
     }
+    public private(set) lazy var mainBackgroundContext : NSManagedObjectContext = {
+        return persistentContainer.newBackgroundContext()
+            .mergePolicy(NSMergeByPropertyObjectTrumpMergePolicy)
+    }()
     public var newBackgroundContext : NSManagedObjectContext {
         return persistentContainer.newBackgroundContext()
     }
@@ -49,7 +53,7 @@ final class CoreDataStack {
         return container
     }()
     
-    public func delete(_ objects: [NSManagedObject], from context: NSManagedObjectContext = CoreDataStack.shared.mainContext, onCompletion: ((Error?)->Void)? = nil) {
+    public func delete(_ objects: [NSManagedObject], from context: NSManagedObjectContext = CoreDataStack.shared.mainBackgroundContext, onCompletion: ((Error?)->Void)? = nil) {
         context.perform {
             do {
                 if let deleted = (try context.execute(NSBatchDeleteRequest(objectIDs: objects.map { $0.objectID })
@@ -68,11 +72,11 @@ final class CoreDataStack {
         }
     }
     
-    public func delete(_ entity: NSManagedObject.Type, from context: NSManagedObjectContext = CoreDataStack.shared.mainContext, onCompletion: ((Error?)->Void)? = nil) {
+    public func delete(_ entity: NSManagedObject.Type, from context: NSManagedObjectContext = CoreDataStack.shared.mainBackgroundContext, onCompletion: ((Error?)->Void)? = nil) {
         delete(entity: entity.description(), from: context, onCompletion: onCompletion)
     }
     
-    public func delete(entity named: String?, from context: NSManagedObjectContext = CoreDataStack.shared.mainContext, onCompletion: ((Error?)->Void)? = nil) {
+    public func delete(entity named: String?, from context: NSManagedObjectContext = CoreDataStack.shared.mainBackgroundContext, onCompletion: ((Error?)->Void)? = nil) {
         guard let entityName = named else { return }
         context.perform {
             do {

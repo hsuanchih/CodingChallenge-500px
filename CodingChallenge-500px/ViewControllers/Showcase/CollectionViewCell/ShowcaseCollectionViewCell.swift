@@ -11,7 +11,6 @@ import UIKit
 class ShowcaseCollectionViewCell: UICollectionViewCell {
 
     @IBOutlet private weak var imageView : UIImageView!
-    
     public var imageUrls : [String]? {
         didSet { imageView.setImage(with: imageUrls?.first) }
     }

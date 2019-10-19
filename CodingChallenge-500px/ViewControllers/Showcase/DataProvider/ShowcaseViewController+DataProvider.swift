@@ -53,6 +53,8 @@ extension ShowcaseViewController {
                     .resourceParameter(ResourceParameter.Photos.feature(self.feature))
                     .resourceParameter(ResourceParameter.Photos.page(nextPage))
                     .resourceParameter(ResourceParameter.Photos.rpp(self.itemsPerPage))
+                    .resourceParameter(ResourceParameter.Photos.image_size(22))
+                    .resourceParameter(ResourceParameter.Photos.image_size(4))
                     .fire { (response: Response<Photos>) in
                         if case let .success(result) = response {
                             self.currentPage = result.currentPage

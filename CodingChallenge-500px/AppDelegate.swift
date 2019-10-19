@@ -13,6 +13,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        purgeData()
         return true
     }
 
@@ -31,8 +32,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func applicationWillTerminate(_ application: UIApplication) {
-        try? CoreDataStack.shared.clearAll()
-        try? PersistentStore.clear(.cache)
+        purgeData()
     }
 }
 
+extension AppDelegate {
+    
+    private func purgeData() {
+        try? CoreDataStack.shared.clearAll()
+        PersistentStore.clear(.cache)
+    }
+}
