@@ -12,10 +12,14 @@ import UIKit
 // while fetch from remote and local image caching happens behind the scenes
 extension UIImageView {
     
-    public func setImage(with urlString: String?) {
+    public func setImage(with urlString: String?, onCompletion: ((Error?)->Void)? = nil) {
         ImageCache.image(with: urlString) {
-            if case let .success(image) = $0 {
+            switch $0 {
+            case .success(let image):
                 DispatchQueue.main.async { self.image = image }
+                onCompletion?(nil)
+            case .failure(let error):
+                onCompletion?(error)
             }
         }
     }

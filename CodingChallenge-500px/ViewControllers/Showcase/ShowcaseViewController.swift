@@ -54,7 +54,7 @@ final class ShowcaseViewController: UIViewController {
     public convenience init(_ feature: ResourceParameter.Photos.Feature) {
         self.init(nibName: String(describing: type(of: self)), bundle: .main)
         self.feature = feature
-        dataProvider = DataProvider(feature: feature, itemsPerPage: 40)
+        dataProvider = DataProvider(feature: feature, itemsPerPage: 50)
     }
     
     override func viewDidLoad() {

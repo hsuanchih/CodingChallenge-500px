@@ -39,8 +39,9 @@ final class DetailViewController: UIViewController {
         didSet {
             guard let photo = photo, photo != oldValue else { return }
             photonameLabel.text = photo.name
-            imageView.setImage(with: photo.imageUrls.first)
-            imageView.setImage(with: photo.imageUrls.last)
+            imageView.setImage(with: photo.imageUrls.first) { _ in
+                self.imageView.setImage(with: photo.imageUrls.last)
+            }
         }
     }
     

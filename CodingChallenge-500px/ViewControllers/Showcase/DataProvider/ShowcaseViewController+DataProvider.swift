@@ -44,7 +44,7 @@ extension ShowcaseViewController {
                 switch (self.currentPage, indexPaths) {
                 case (0, .none):
                     break
-                case (1..<self.totalPages, .some(let indexPaths)) where indexPaths.first { $0.item == self.currentPage*self.itemsPerPage-10 } != nil:
+                case (1..<self.totalPages, .some(let indexPaths)) where indexPaths.first { $0.item == self.currentPage*self.itemsPerPage-15 } != nil:
                     nextPage = self.currentPage+1
                 default:
                     return
