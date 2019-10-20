@@ -15,7 +15,7 @@ The engineering team at 500px works with [IGListKit](https://github.com/Instagra
 ![Demo](./Demo/500pxDemo.gif)
 
 ## TODO
-* __Justified Layout - Showcasing Photos with Aspect Ratios Preserved__
+* __Justified Layout - Showcasing Photos with Preserved Aspect Ratios__
 
    A classic approach to justifying layout of a photo grid to display photos in their aspect ratios finds its roots in the [Text Justification](https://en.wikipedia.org/wiki/Line_wrap_and_word_wrap) problem. The idea is to have photo dimensions resized to fit fixed row heights while preserving aspect ratios. Photo failing to stack to the end of the row is moved to the next row. The drawback with this approach is that it introduces either uneven inter-item spacings or inconsistent margins at the end of each row, depending on the fitting policy. With somewhat flexible row heights, inter-item spacing can be strictly enforced to give a more consistent look. 500px's own [Greedo Layout](https://github.com/500px/greedo-layout-for-ios) is an elegant take on the idea. Nevertheless, the tough grind with justified layout implementations is adapting to device orientation transitions.
 
