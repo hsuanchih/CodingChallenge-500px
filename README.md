@@ -24,7 +24,7 @@ The engineering team at 500px works with [IGListKit](https://github.com/Instagra
    500px's own [Greedo Layout](https://github.com/500px/greedo-layout-for-ios) is an elegant take on the idea. Nevertheless, the tough grind with justified layout implementations is adapting to device orientation transitions.
 
 ## Instruction
-Create file "consumer_key.txt" with 500px's consumer key in the Xcode project.
+Create file __"consumer_key.txt"__ with 500px's consumer key in the Xcode project.
 
 ## Design
 ![Design](./Design/500pxDesign.png)
