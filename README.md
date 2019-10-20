@@ -30,6 +30,7 @@ Create file __"consumer_key.txt"__ with 500px's consumer key in the Xcode projec
 ![Design](./Design/500pxDesign.png)
 
 ### Data Source
+_______________
 
 __Fetching Remote Data__
 
@@ -58,6 +59,7 @@ Loading images from remote is expensive, naturally a local copy of images fetche
 [PersistentStore](./CodingChallenge-500px/PersistentStore/PersistentStore.swift) is used by the [ImageCache](./CodingChallenge-500px/ImageCache/ImageCache.swift) to persist & retrieve images from the local store. It implements two-level caching, using [NSCache](https://developer.apple.com/documentation/foundation/nscache) as an intermediate and resorting to disk only on cache miss. Operations on the [PersistentStore](./CodingChallenge-500px/PersistentStore/PersistentStore.swift) are controlled through an designated [dispatch queue](https://developer.apple.com/documentation/dispatch/dispatchqueue), allowing for concurrent reads while enforcing exclusive writes.
 
 ### Presentation
+________________
 
 __The PhotoGrid__
 
