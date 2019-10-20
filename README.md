@@ -28,3 +28,13 @@ Create file "consumer_key.txt" with 500px's consumer key in the Xcode project.
 
 ## Design
 ![Design](./Design/500pxDesign.png)
+
+### Data Source
+
+__Fetching Remote Data__
+
+[Request](./CodingChallenge-500px/Networking/Request.swift) is a lightweight web service client - a simple wrapper around [URLRequest](https://developer.apple.com/documentation/foundation/urlrequest) & [URLComponents](https://developer.apple.com/documentation/foundation/urlcomponents) coupled with its own builder designed to fullfil a subset of 500px's HTTP GET requests. It supports query parameter injection through the [ResourceParameter](./CodingChallenge-500px/Networking/ResourceParameter/ResourceParameter%2BPhotos.swift) abstraction.
+
+__Handling Fetched Data__
+
+Response from the request are de-serialized into CoreData entities using [JSONDecoder](https://developer.apple.com/documentation/foundation/jsondecoder). Data models are managed objects subclasses conforming to the [Decodable](https://developer.apple.com/documentation/swift/decodable) protocol. The id property is used as the unique key in the managed object model to identify duplicated [Photo](./CodingChallenge-500px/CoreData/DataModels/Photo%2BCoreDataClass.swift)/[User](CodingChallenge-500px/CoreData/DataModels/User%2BCoreDataClass.swift) entities.  Entities are created and inserted into the background managed object context. 
