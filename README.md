@@ -16,3 +16,6 @@ The engineering team at 500px works with [IGListKit](https://github.com/Instagra
 
 ## Instruction
 * Create file "consumer_key.txt" containing 500px's consumer key in the Xcode project.
+
+## Design
+![Demo](./Design/Design.png)
