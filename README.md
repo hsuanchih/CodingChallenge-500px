@@ -43,7 +43,7 @@ __CoreData__
 
 * __Why CoreData?__
 
-  Or more specifically, why use CoreData with SQLLite as its persistent store type as opposed to using CoreData simply for an in-memory object graph? Keeping all managed objects and their relationships in the memory is bound to overrun the heap at some point as the number of objects continue to grow. So the idea is to have objects backed in the persistent store and faulted into memory as needed.
+  Or more specifically, why use CoreData with SQLLite as its persistent store type as opposed to using CoreData simply for its in-memory object graph? Keeping managed objects and their relationships in memory is bound to overrun the heap at some point as the number of objects grow. So the idea is to have objects backed in the persistent store and faulted into memory as needed.
 
 * __Managed Object Context Relationships__
 
