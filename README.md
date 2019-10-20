@@ -43,7 +43,7 @@ __CoreData__
 
 * __Why CoreData?__
 
-  Or more specifically, why use CoreData with SQLLite as its persistent store type as opposed to using CoreData simply for its in-memory object graph? Keeping managed objects and their relationships in memory is bound to overrun the heap at some point as the number of objects grow. So the idea is to have objects backed in the persistent store and faulted into memory as needed.
+  Or more specifically, why use [CoreData](https://developer.apple.com/documentation/coredata) with SQLLite as its persistent store type as opposed to using CoreData simply for its in-memory object graph? Keeping managed objects and their relationships in memory is bound to overrun the heap at some point as the number of objects grow. So the idea is to have objects backed in the persistent store and faulted into memory as needed.
 
 * __Managed Object Context Relationships__
 
@@ -51,3 +51,8 @@ __CoreData__
   
   Uniqueness constraint validation in CoreData relies on [NSPersistentStoreCoordinator](https://developer.apple.com/documentation/coredata/nspersistentstorecoordinator) working along-side [NSManagedObjectModel](https://developer.apple.com/documentation/coredata/nsmanagedobjectmodel) to do the heavy-lifting, so changes propagated between managed object contexts through parent-child relationships will also bring along unresolved duplications. Thus the decision is to have each managed object context wired to the persistent store coordinator as its parent store, and propagate changes with saves.
 
+__ImageCache__
+
+Loading images from remote is expensive, naturally a local copy of images fetched should be kept. Databases are not ideal for storing BLOBs, thus [ImageCache](./CodingChallenge-500px/ImageCache/ImageCache.swift) exists to fulfill this purpose - to fetch images through remote urls as required and store them locally in the application's caches directory.
+
+[PersistentStore](./CodingChallenge-500px/PersistentStore/PersistentStore.swift) is used by the [ImageCache](./CodingChallenge-500px/ImageCache/ImageCache.swift) to persist & retrieve images from the local store. It implements two-level caching, using [NSCache](https://developer.apple.com/documentation/foundation/nscache) as an intermediate and resorting to disk only on cache miss. Operations on the [PersistentStore](./CodingChallenge-500px/PersistentStore/PersistentStore.swift) are controlled through an designated [dispatch queue](https://developer.apple.com/documentation/dispatch/dispatchqueue), allowing for concurrent reads while enforcing exclusive writes.
