@@ -37,4 +37,17 @@ __Fetching Remote Data__
 
 __Handling Fetched Data__
 
-Response from the request are de-serialized into CoreData entities using [JSONDecoder](https://developer.apple.com/documentation/foundation/jsondecoder). Data models are managed objects subclasses conforming to the [Decodable](https://developer.apple.com/documentation/swift/decodable) protocol. The __id__ property is used as the unique key by the managed object model to identify duplicate [Photo](./CodingChallenge-500px/CoreData/DataModels/Photo%2BCoreDataClass.swift)/[User](CodingChallenge-500px/CoreData/DataModels/User%2BCoreDataClass.swift) entities.  Entities are created and inserted into the background managed object context attached to the JSONDecoder via its [userInfo dictionary](https://developer.apple.com/documentation/foundation/jsondecoder/2895340-userinfo).
+Response from the request are de-serialized into CoreData entities using [JSONDecoder](https://developer.apple.com/documentation/foundation/jsondecoder). Data models are managed objects subclasses conforming to the [Decodable](https://developer.apple.com/documentation/swift/decodable) protocol. Entities are created and added to the background managed object context attached to the JSONDecoder via its [userInfo dictionary](https://developer.apple.com/documentation/foundation/jsondecoder/2895340-userinfo).
+
+__CoreData__
+
+* __Why CoreData?__
+
+  Or more specifically, why use CoreData with SQLLite as its persistent store type as opposed to using CoreData simply for an in-memory object graph? Keeping all managed objects and their relationships in the memory is bound to overrun the heap at some point as the number of objects continue to grow. So the idea is to have objects backed in the persistent store and faulted into memory as needed.
+
+* __Managed Object Context Relationships__
+
+  The decision is to forgo the typical parent-child relationship between managed object contexts. The reason being that the managed object model is setup to use the __id__ property of each [Photo](./CodingChallenge-500px/CoreData/DataModels/Photo%2BCoreDataClass.swift)/[User](CodingChallenge-500px/CoreData/DataModels/User%2BCoreDataClass.swift) entity as the primary key (and the [merge policy](https://developer.apple.com/documentation/coredata/nsmergepolicy/merge_policies) on relevant managed object contexts set to ` NSMergeByPropertyObjectTrumpMergePolicy`) so to avoid duplicates.
+  
+  Uniqueness constraint validation in CoreData relies on [NSPersistentStoreCoordinator](https://developer.apple.com/documentation/coredata/nspersistentstorecoordinator) working along-side [NSManagedObjectModel](https://developer.apple.com/documentation/coredata/nsmanagedobjectmodel) to do the heavy-lifting, so changes propagated between managed object contexts through parent-child relationships will also bring along unresolved duplications. Thus the decision is to have each managed object context wired to the persistent store coordinator as its parent store, and propagate changes via saving.
+
