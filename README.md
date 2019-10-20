@@ -56,3 +56,22 @@ __ImageCache__
 Loading images from remote is expensive, naturally a local copy of images fetched should be kept. Databases are not ideal for storing BLOBs, thus [ImageCache](./CodingChallenge-500px/ImageCache/ImageCache.swift) exists to fulfill this purpose - to fetch images through remote urls as required and store them locally in the application's caches directory.
 
 [PersistentStore](./CodingChallenge-500px/PersistentStore/PersistentStore.swift) is used by the [ImageCache](./CodingChallenge-500px/ImageCache/ImageCache.swift) to persist & retrieve images from the local store. It implements two-level caching, using [NSCache](https://developer.apple.com/documentation/foundation/nscache) as an intermediate and resorting to disk only on cache miss. Operations on the [PersistentStore](./CodingChallenge-500px/PersistentStore/PersistentStore.swift) are controlled through an designated [dispatch queue](https://developer.apple.com/documentation/dispatch/dispatchqueue), allowing for concurrent reads while enforcing exclusive writes.
+
+### Presentation
+
+__The PhotoGrid__
+
+  [ShowcaseViewController](./CodingChallenge-500px/ViewControllers/Showcase/ShowcaseViewController.swift) pulls remote data through its [DataProvider](./CodingChallenge-500px/ViewControllers/Showcase/DataProvider/ShowcaseViewController%2BDataProvider.swift), and uses [NSFetchedResultsController](https://developer.apple.com/documentation/coredata/nsfetchedresultscontroller) together with [UICollectionView](https://developer.apple.com/documentation/uikit/uicollectionview) and [UICollectionViewDataSource](https://developer.apple.com/documentation/uikit/uicollectionviewdatasource) to bridge fetched data with the user interface. Conforming to [NSFetchedResultsControllerDelegate](https://developer.apple.com/documentation/coredata/nsfetchedresultscontroller#1661441) brings data source changes to the user interface.
+
+__Infinite Scroll__
+
+  Infinite scroll is accomplished through [UICollectionViewDataSourcePrefetching](https://developer.apple.com/documentation/uikit/uicollectionviewdatasourceprefetching).
+  
+__Presenting Photo Details__
+
+  Photo details are presented by [DetailViewController](./CodingChallenge-500px/ViewControllers/Detail/DetailViewController.swift). This view controller is presented modally by [ShowcaseViewController](./CodingChallenge-500px/ViewControllers/Showcase/ShowcaseViewController.swift) inside a [UIPageViewController](https://developer.apple.com/documentation/uikit/uipageviewcontroller). Navigation between detail views is possible by having [ShowcaseViewController](./CodingChallenge-500px/ViewControllers/Showcase/ShowcaseViewController.swift) conform to [UIPageViewControllerDataSource](https://developer.apple.com/documentation/uikit/uipageviewcontrollerdatasource).
+
+
+## Author
+
+Hsuan-Chih Chuang, <hsuanchih.chuang@gmail.com>
