@@ -50,7 +50,7 @@ __CoreData__
 
   The decision is to forgo the typical parent-child relationship between managed object contexts. The reason being that the managed object model is setup to use the __id__ property of each [Photo](./CodingChallenge-500px/CoreData/DataModels/Photo%2BCoreDataClass.swift)/[User](CodingChallenge-500px/CoreData/DataModels/User%2BCoreDataClass.swift) entity as the primary key (and the [merge policy](https://developer.apple.com/documentation/coredata/nsmergepolicy/merge_policies) on relevant managed object contexts set to ` NSMergeByPropertyObjectTrumpMergePolicy`) so to avoid duplicates.
   
-  Uniqueness constraint validation in CoreData relies on [NSPersistentStoreCoordinator](https://developer.apple.com/documentation/coredata/nspersistentstorecoordinator) working along-side [NSManagedObjectModel](https://developer.apple.com/documentation/coredata/nsmanagedobjectmodel) to do the heavy-lifting, so changes propagated between managed object contexts through parent-child relationships will also bring along unresolved duplications. Thus the decision is to have each managed object context wired to the persistent store coordinator as its parent store, and propagate changes with saves.
+  Uniqueness constraint validation in CoreData relies on [NSPersistentStoreCoordinator](https://developer.apple.com/documentation/coredata/nspersistentstorecoordinator) working along-side the relational database to do the heavy-lifting, so changes propagated between managed object contexts through parent-child relationships will also bring along unresolved duplications. Thus the decision is to have each managed object context wired to the persistent store coordinator as its parent store, and propagate changes with saves.
 
 __ImageCache__
 
