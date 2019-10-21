@@ -37,9 +37,10 @@ public struct PersistentStore {
         dispatchQueue.async(flags: .barrier) {
             do {
                 let url = try self.url(for: storeType).appendingPathComponent(fileName, isDirectory: false)
-                if !overwrite && FileManager.default.fileExists(atPath: url.path) { return }
-                try remove(file: fileName, from: storeType)
-                FileManager.default.createFile(atPath: url.path, contents: data, attributes: nil)
+                if overwrite || !FileManager.default.fileExists(atPath: url.path) {
+                    try remove(file: fileName, from: storeType)
+                    FileManager.default.createFile(atPath: url.path, contents: data, attributes: nil)
+                }
                 onCompletion?(nil)
             } catch {
                 onCompletion?(error)
