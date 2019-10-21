@@ -15,6 +15,7 @@
 		472E5D55235E0BC300E72660 /* PersistentStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472E5D54235E0BC300E72660 /* PersistentStoreTests.swift */; };
 		472E5D5B235E218800E72660 /* bubble.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 472E5D59235E218700E72660 /* bubble.jpg */; };
 		472E5D5C235E218800E72660 /* tunnel.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 472E5D5A235E218800E72660 /* tunnel.jpg */; };
+		472E5D5D235E441200E72660 /* ResourceParameterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 472E5D52235E0BA200E72660 /* ResourceParameterTests.swift */; };
 		474A03BB234FC31800F607B0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 474A03BA234FC31800F607B0 /* ViewController.swift */; };
 		474A03BE234FC31800F607B0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 474A03BC234FC31800F607B0 /* Main.storyboard */; };
 		474A03C1234FC31800F607B0 /* CodingChallenge_500px.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 474A03BF234FC31800F607B0 /* CodingChallenge_500px.xcdatamodeld */; };
@@ -525,6 +526,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				472E5D5D235E441200E72660 /* ResourceParameterTests.swift in Sources */,
 				472E5D51235D350D00E72660 /* CoreDataTests.swift in Sources */,
 				472E5D55235E0BC300E72660 /* PersistentStoreTests.swift in Sources */,
 			);
